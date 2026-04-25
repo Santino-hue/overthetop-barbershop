@@ -1,0 +1,1398 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Over The Top Barbershop | San Antonio, TX</title>
+  <meta name="description" content="San Antonio's #1 Barbershop. Premium cuts, fades, and beard trims on the northwest side." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+  <style>
+    /* ─── RESET & BASE ──────────────────────────────────────── */
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+    :root {
+      --black:   #0a0a0a;
+      --black2:  #111111;
+      --black3:  #1a1a1a;
+      --gold:    #C9A84C;
+      --gold2:   #e8c76a;
+      --red:     #CC0000;
+      --red2:    #ff1a1a;
+      --white:   #ffffff;
+      --gray:    #888888;
+      --light:   #cccccc;
+    }
+    html { scroll-behavior: smooth; font-size: 16px; }
+    body {
+      background: var(--black);
+      color: var(--white);
+      font-family: 'Inter', sans-serif;
+      line-height: 1.6;
+      overflow-x: hidden;
+    }
+    h1, h2, h3, h4 { font-family: 'Bebas Neue', sans-serif; letter-spacing: 0.05em; }
+    a { color: inherit; text-decoration: none; }
+    img { display: block; max-width: 100%; }
+
+    /* ─── SCROLL ANIMATIONS ─────────────────────────────────── */
+    .reveal {
+      opacity: 0;
+      transform: translateY(40px);
+      transition: opacity 0.7s ease, transform 0.7s ease;
+    }
+    .reveal.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    .reveal-left {
+      opacity: 0;
+      transform: translateX(-50px);
+      transition: opacity 0.7s ease, transform 0.7s ease;
+    }
+    .reveal-left.visible { opacity: 1; transform: translateX(0); }
+    .reveal-right {
+      opacity: 0;
+      transform: translateX(50px);
+      transition: opacity 0.7s ease, transform 0.7s ease;
+    }
+    .reveal-right.visible { opacity: 1; transform: translateX(0); }
+
+    /* stagger children */
+    .stagger > * { opacity: 0; transform: translateY(30px); transition: opacity 0.6s ease, transform 0.6s ease; }
+    .stagger.visible > *:nth-child(1) { opacity: 1; transform: none; transition-delay: 0s; }
+    .stagger.visible > *:nth-child(2) { opacity: 1; transform: none; transition-delay: 0.1s; }
+    .stagger.visible > *:nth-child(3) { opacity: 1; transform: none; transition-delay: 0.2s; }
+    .stagger.visible > *:nth-child(4) { opacity: 1; transform: none; transition-delay: 0.3s; }
+    .stagger.visible > *:nth-child(5) { opacity: 1; transform: none; transition-delay: 0.4s; }
+    .stagger.visible > *:nth-child(6) { opacity: 1; transform: none; transition-delay: 0.5s; }
+
+    /* ─── NAV ───────────────────────────────────────────────── */
+    #navbar {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 1000;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 18px 5%;
+      transition: background 0.4s, padding 0.4s, box-shadow 0.4s;
+    }
+    #navbar.scrolled {
+      background: rgba(10,10,10,0.97);
+      padding: 12px 5%;
+      box-shadow: 0 2px 30px rgba(0,0,0,0.6);
+      border-bottom: 1px solid rgba(201,168,76,0.15);
+    }
+    .nav-logo {
+      display: flex;
+      flex-direction: column;
+      line-height: 1;
+    }
+    .nav-logo-main {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 1.6rem;
+      letter-spacing: 0.08em;
+      color: var(--gold);
+    }
+    .nav-logo-sub {
+      font-size: 0.6rem;
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+      color: var(--light);
+      margin-top: 1px;
+    }
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 32px;
+      list-style: none;
+    }
+    .nav-links a {
+      font-size: 0.8rem;
+      font-weight: 500;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--light);
+      position: relative;
+      transition: color 0.3s;
+    }
+    .nav-links a::after {
+      content: '';
+      position: absolute;
+      bottom: -4px; left: 0;
+      width: 0; height: 1px;
+      background: var(--gold);
+      transition: width 0.3s;
+    }
+    .nav-links a:hover { color: var(--gold); }
+    .nav-links a:hover::after { width: 100%; }
+    .btn-book-nav {
+      background: var(--red);
+      color: var(--white) !important;
+      padding: 10px 22px;
+      font-size: 0.75rem !important;
+      letter-spacing: 0.15em;
+      border-radius: 2px;
+      font-weight: 600 !important;
+      transition: background 0.3s, transform 0.2s !important;
+    }
+    .btn-book-nav:hover { background: var(--red2) !important; transform: scale(1.04); }
+    .btn-book-nav::after { display: none !important; }
+
+    /* hamburger */
+    .hamburger {
+      display: none;
+      flex-direction: column;
+      gap: 5px;
+      cursor: pointer;
+      padding: 4px;
+      z-index: 1100;
+    }
+    .hamburger span {
+      display: block;
+      width: 26px; height: 2px;
+      background: var(--white);
+      border-radius: 2px;
+      transition: transform 0.3s, opacity 0.3s;
+    }
+    .hamburger.open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+    .hamburger.open span:nth-child(2) { opacity: 0; }
+    .hamburger.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+
+    /* mobile menu */
+    .mobile-menu {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(10,10,10,0.98);
+      z-index: 999;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 36px;
+    }
+    .mobile-menu.open { display: flex; }
+    .mobile-menu a {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 2.5rem;
+      letter-spacing: 0.1em;
+      color: var(--white);
+      transition: color 0.3s;
+    }
+    .mobile-menu a:hover { color: var(--gold); }
+    .mobile-menu .btn-book-mob {
+      background: var(--red);
+      padding: 14px 40px;
+      border-radius: 2px;
+      font-size: 2rem !important;
+      color: var(--white) !important;
+    }
+
+    /* ─── HERO ──────────────────────────────────────────────── */
+    #hero {
+      position: relative;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      overflow: hidden;
+    }
+    .hero-bg {
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(ellipse at 20% 50%, rgba(204,0,0,0.12) 0%, transparent 55%),
+        radial-gradient(ellipse at 80% 30%, rgba(201,168,76,0.08) 0%, transparent 50%),
+        linear-gradient(160deg, #0a0a0a 0%, #111111 40%, #0d0808 100%);
+    }
+    .hero-grid {
+      position: absolute;
+      inset: 0;
+      background-image:
+        linear-gradient(rgba(201,168,76,0.04) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(201,168,76,0.04) 1px, transparent 1px);
+      background-size: 60px 60px;
+    }
+    .hero-content {
+      position: relative;
+      z-index: 2;
+      max-width: 800px;
+      padding: 0 24px;
+    }
+    .hero-eyebrow {
+      display: inline-block;
+      font-size: 0.72rem;
+      font-weight: 600;
+      letter-spacing: 0.3em;
+      text-transform: uppercase;
+      color: var(--gold);
+      border: 1px solid rgba(201,168,76,0.4);
+      padding: 6px 18px;
+      border-radius: 2px;
+      margin-bottom: 28px;
+    }
+    .hero-title {
+      font-size: clamp(3.5rem, 10vw, 8rem);
+      line-height: 0.95;
+      letter-spacing: 0.03em;
+      margin-bottom: 24px;
+      color: var(--white);
+    }
+    .hero-title span { color: var(--gold); }
+    .hero-sub {
+      font-size: clamp(1rem, 2.5vw, 1.4rem);
+      font-weight: 300;
+      color: var(--light);
+      letter-spacing: 0.08em;
+      margin-bottom: 44px;
+    }
+    .btn-hero {
+      display: inline-block;
+      background: var(--gold);
+      color: var(--black) !important;
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 1.1rem;
+      letter-spacing: 0.2em;
+      padding: 18px 48px;
+      border-radius: 2px;
+      transition: background 0.3s, transform 0.2s, box-shadow 0.3s;
+      box-shadow: 0 0 0 rgba(201,168,76,0);
+    }
+    .btn-hero:hover {
+      background: var(--gold2);
+      transform: scale(1.04);
+      box-shadow: 0 8px 30px rgba(201,168,76,0.35);
+    }
+    .hero-scroll-hint {
+      position: absolute;
+      bottom: 36px;
+      left: 50%;
+      transform: translateX(-50%);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 8px;
+      opacity: 0.5;
+    }
+    .hero-scroll-hint span {
+      font-size: 0.65rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--gray);
+    }
+    .scroll-line {
+      width: 1px;
+      height: 40px;
+      background: linear-gradient(to bottom, var(--gray), transparent);
+      animation: scrollPulse 2s ease-in-out infinite;
+    }
+    @keyframes scrollPulse {
+      0%, 100% { transform: scaleY(1); opacity: 0.5; }
+      50% { transform: scaleY(1.3); opacity: 1; }
+    }
+
+    /* ─── SECTION COMMON ────────────────────────────────────── */
+    section { padding: 100px 5%; }
+    .section-label {
+      font-size: 0.7rem;
+      font-weight: 600;
+      letter-spacing: 0.35em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 12px;
+    }
+    .section-title {
+      font-size: clamp(2.4rem, 5vw, 4rem);
+      line-height: 1;
+      margin-bottom: 16px;
+    }
+    .section-divider {
+      width: 60px; height: 2px;
+      background: linear-gradient(to right, var(--red), var(--gold));
+      margin-bottom: 24px;
+    }
+    .section-divider.centered { margin-left: auto; margin-right: auto; }
+    .section-intro {
+      font-size: 1rem;
+      color: var(--light);
+      max-width: 540px;
+      font-weight: 300;
+      line-height: 1.8;
+    }
+    .section-intro.centered { margin: 0 auto; text-align: center; }
+
+    /* ─── SERVICES ──────────────────────────────────────────── */
+    #services { background: var(--black2); }
+    .services-header { text-align: center; margin-bottom: 64px; }
+    .services-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 2px;
+      max-width: 1100px;
+      margin: 0 auto;
+    }
+    .service-card {
+      position: relative;
+      background: var(--black3);
+      padding: 44px 32px;
+      text-align: center;
+      overflow: hidden;
+      cursor: default;
+      transition: background 0.3s, transform 0.3s;
+    }
+    .service-card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 2px;
+      background: linear-gradient(to right, var(--red), var(--gold));
+      transform: scaleX(0);
+      transition: transform 0.4s ease;
+    }
+    .service-card:hover { background: #1f1f1f; transform: translateY(-4px); }
+    .service-card:hover::before { transform: scaleX(1); }
+    .service-icon {
+      font-size: 2.2rem;
+      margin-bottom: 16px;
+      display: block;
+    }
+    .service-name {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 1.5rem;
+      letter-spacing: 0.08em;
+      color: var(--white);
+      margin-bottom: 8px;
+    }
+    .service-desc {
+      font-size: 0.82rem;
+      color: var(--gray);
+      margin-bottom: 20px;
+      line-height: 1.6;
+    }
+    .service-price {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 2.2rem;
+      color: var(--gold);
+      letter-spacing: 0.05em;
+    }
+    .service-price span {
+      font-family: 'Inter', sans-serif;
+      font-size: 1rem;
+      vertical-align: super;
+      font-weight: 600;
+    }
+
+    /* ─── GALLERY ───────────────────────────────────────────── */
+    #gallery { background: var(--black); }
+    .gallery-header { text-align: center; margin-bottom: 60px; }
+    .gallery-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      grid-template-rows: repeat(2, 280px);
+      gap: 3px;
+      max-width: 1100px;
+      margin: 0 auto;
+    }
+    .gallery-item {
+      position: relative;
+      overflow: hidden;
+      cursor: pointer;
+    }
+    .gallery-item:nth-child(1) { grid-column: span 2; }
+    .gallery-item:nth-child(4) { grid-column: span 2; }
+    .gallery-bg {
+      position: absolute;
+      inset: 0;
+      transition: transform 0.6s ease;
+    }
+    .gallery-item:hover .gallery-bg { transform: scale(1.07); }
+    /* unique gradients per card */
+    .gallery-item:nth-child(1) .gallery-bg { background: linear-gradient(135deg, #1a0a0a 0%, #2d1515 40%, #1a0505 100%); }
+    .gallery-item:nth-child(2) .gallery-bg { background: linear-gradient(135deg, #0d0d0d 0%, #1a1a0d 60%, #0d0a00 100%); }
+    .gallery-item:nth-child(3) .gallery-bg { background: linear-gradient(135deg, #0a0a1a 0%, #0d0d2d 50%, #050510 100%); }
+    .gallery-item:nth-child(4) .gallery-bg { background: linear-gradient(135deg, #0a1a0a 0%, #0d2d0d 40%, #050f05 100%); }
+    .gallery-item:nth-child(5) .gallery-bg { background: linear-gradient(135deg, #1a0a1a 0%, #2d152d 50%, #0a050a 100%); }
+    .gallery-item:nth-child(6) .gallery-bg { background: linear-gradient(135deg, #1a1000 0%, #2d1e00 50%, #100c00 100%); }
+    /* decorative barber pole lines */
+    .gallery-deco {
+      position: absolute;
+      inset: 0;
+      opacity: 0.06;
+      background: repeating-linear-gradient(
+        45deg,
+        transparent,
+        transparent 20px,
+        rgba(201,168,76,0.6) 20px,
+        rgba(201,168,76,0.6) 22px
+      );
+    }
+    .gallery-overlay {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(to top, rgba(0,0,0,0.85) 0%, transparent 50%);
+      display: flex;
+      align-items: flex-end;
+      padding: 24px;
+      opacity: 0;
+      transition: opacity 0.4s;
+    }
+    .gallery-item:hover .gallery-overlay { opacity: 1; }
+    .gallery-tag {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 1.2rem;
+      letter-spacing: 0.12em;
+      color: var(--gold);
+    }
+    /* center scissors icon */
+    .gallery-center-icon {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 3rem;
+      opacity: 0.12;
+      transition: opacity 0.4s, transform 0.4s;
+    }
+    .gallery-item:hover .gallery-center-icon { opacity: 0.04; transform: scale(1.2) rotate(15deg); }
+    .gallery-placeholder-text {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+    }
+    .gallery-placeholder-text .ph-icon { font-size: 2.4rem; opacity: 0.15; }
+    .gallery-placeholder-text .ph-label {
+      font-size: 0.62rem;
+      letter-spacing: 0.3em;
+      text-transform: uppercase;
+      color: var(--gray);
+      opacity: 0.5;
+    }
+    .gallery-note {
+      text-align: center;
+      margin-top: 24px;
+      font-size: 0.82rem;
+      color: var(--gray);
+      letter-spacing: 0.05em;
+    }
+    .gallery-note strong { color: var(--gold); }
+
+    /* ─── ABOUT ─────────────────────────────────────────────── */
+    #about { background: var(--black2); }
+    .about-inner {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 80px;
+      align-items: center;
+      max-width: 1100px;
+      margin: 0 auto;
+    }
+    .about-visual {
+      position: relative;
+      height: 460px;
+    }
+    .about-card-main {
+      position: absolute;
+      inset: 0;
+      border-radius: 2px;
+      background: linear-gradient(145deg, #1a0a00, #2d1500, #1a1000);
+      overflow: hidden;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .about-card-main::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: repeating-linear-gradient(
+        -45deg,
+        transparent,
+        transparent 30px,
+        rgba(201,168,76,0.025) 30px,
+        rgba(201,168,76,0.025) 32px
+      );
+    }
+    .about-big-text {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 9rem;
+      color: rgba(201,168,76,0.07);
+      letter-spacing: -0.02em;
+      line-height: 1;
+      text-align: center;
+      user-select: none;
+    }
+    .about-badge {
+      position: absolute;
+      bottom: -16px;
+      right: -16px;
+      background: var(--gold);
+      color: var(--black);
+      width: 110px; height: 110px;
+      border-radius: 50%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      font-family: 'Bebas Neue', sans-serif;
+      line-height: 1.1;
+      text-align: center;
+      box-shadow: 0 8px 30px rgba(201,168,76,0.3);
+    }
+    .about-badge .badge-num { font-size: 2.2rem; }
+    .about-badge .badge-txt { font-size: 0.7rem; letter-spacing: 0.05em; }
+    .about-content .section-intro { max-width: 100%; }
+    .about-stats {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 24px;
+      margin-top: 40px;
+    }
+    .about-stat {
+      text-align: center;
+      padding: 20px 16px;
+      border: 1px solid rgba(201,168,76,0.15);
+      border-radius: 2px;
+      transition: border-color 0.3s;
+    }
+    .about-stat:hover { border-color: var(--gold); }
+    .about-stat-num {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 2.4rem;
+      color: var(--gold);
+      display: block;
+    }
+    .about-stat-label {
+      font-size: 0.7rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--gray);
+      margin-top: 4px;
+      display: block;
+    }
+    .about-cta {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      margin-top: 36px;
+      font-size: 0.8rem;
+      font-weight: 600;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--gold);
+      border-bottom: 1px solid rgba(201,168,76,0.4);
+      padding-bottom: 4px;
+      transition: border-color 0.3s, gap 0.3s;
+    }
+    .about-cta:hover { border-color: var(--gold); gap: 16px; }
+
+    /* ─── TESTIMONIALS ──────────────────────────────────────── */
+    #testimonials { background: var(--black); }
+    .testimonials-header { text-align: center; margin-bottom: 64px; }
+    .testimonials-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 24px;
+      max-width: 1100px;
+      margin: 0 auto;
+    }
+    .testimonial-card {
+      background: var(--black3);
+      padding: 40px 36px;
+      border-radius: 2px;
+      position: relative;
+      border: 1px solid rgba(255,255,255,0.05);
+      transition: border-color 0.3s, transform 0.3s;
+    }
+    .testimonial-card:hover { border-color: rgba(201,168,76,0.25); transform: translateY(-4px); }
+    .testimonial-card::before {
+      content: '"';
+      position: absolute;
+      top: 16px; right: 28px;
+      font-family: Georgia, serif;
+      font-size: 6rem;
+      color: rgba(201,168,76,0.1);
+      line-height: 1;
+    }
+    .stars {
+      display: flex;
+      gap: 4px;
+      margin-bottom: 20px;
+    }
+    .star {
+      color: var(--gold);
+      font-size: 1rem;
+    }
+    .testimonial-text {
+      font-size: 0.95rem;
+      line-height: 1.8;
+      color: var(--light);
+      margin-bottom: 28px;
+      font-style: italic;
+    }
+    .testimonial-author {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
+    .author-avatar {
+      width: 46px; height: 46px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 1.2rem;
+      color: var(--black);
+      flex-shrink: 0;
+    }
+    .author-avatar.av1 { background: linear-gradient(135deg, var(--gold), #8b6914); }
+    .author-avatar.av2 { background: linear-gradient(135deg, var(--red), #660000); color: var(--white); }
+    .author-avatar.av3 { background: linear-gradient(135deg, #555, #222); color: var(--gold); }
+    .author-name {
+      font-weight: 600;
+      font-size: 0.9rem;
+      color: var(--white);
+    }
+    .author-meta {
+      font-size: 0.75rem;
+      color: var(--gray);
+      margin-top: 2px;
+    }
+
+    /* ─── CONTACT ───────────────────────────────────────────── */
+    #contact { background: var(--black2); }
+    .contact-inner {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 80px;
+      max-width: 1100px;
+      margin: 0 auto;
+    }
+    .contact-info { }
+    .contact-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 18px;
+      margin-bottom: 32px;
+    }
+    .contact-icon {
+      width: 46px; height: 46px;
+      background: rgba(201,168,76,0.1);
+      border: 1px solid rgba(201,168,76,0.25);
+      border-radius: 2px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.1rem;
+      flex-shrink: 0;
+      transition: background 0.3s;
+    }
+    .contact-item:hover .contact-icon { background: rgba(201,168,76,0.2); }
+    .contact-item-title {
+      font-size: 0.7rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 4px;
+    }
+    .contact-item-body {
+      font-size: 0.92rem;
+      color: var(--light);
+      line-height: 1.6;
+    }
+    .hours-table { width: 100%; margin-top: 8px; }
+    .hours-table tr td { padding: 3px 0; font-size: 0.88rem; color: var(--light); }
+    .hours-table tr td:last-child { text-align: right; color: var(--gold); font-weight: 500; }
+    .hours-table tr:last-child td { color: var(--red); }
+
+    /* form */
+    .contact-form-wrap { }
+    .form-title {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 1.8rem;
+      letter-spacing: 0.06em;
+      margin-bottom: 28px;
+      color: var(--white);
+    }
+    .form-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+    }
+    .form-group { display: flex; flex-direction: column; gap: 8px; }
+    .form-group.full { grid-column: span 2; }
+    .form-group label {
+      font-size: 0.68rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--gray);
+      font-weight: 500;
+    }
+    .form-group input,
+    .form-group select {
+      background: var(--black3);
+      border: 1px solid rgba(255,255,255,0.08);
+      color: var(--white);
+      padding: 14px 16px;
+      font-size: 0.9rem;
+      font-family: 'Inter', sans-serif;
+      border-radius: 2px;
+      outline: none;
+      transition: border-color 0.3s, box-shadow 0.3s;
+      -webkit-appearance: none;
+      appearance: none;
+    }
+    .form-group select {
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath fill='%23C9A84C' d='M6 8L0 0h12z'/%3E%3C/svg%3E");
+      background-repeat: no-repeat;
+      background-position: right 14px center;
+      padding-right: 38px;
+    }
+    .form-group input:focus,
+    .form-group select:focus {
+      border-color: var(--gold);
+      box-shadow: 0 0 0 3px rgba(201,168,76,0.1);
+    }
+    .form-group input::placeholder { color: #555; }
+    .btn-submit {
+      width: 100%;
+      background: var(--red);
+      color: var(--white);
+      border: none;
+      padding: 18px;
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 1.1rem;
+      letter-spacing: 0.2em;
+      cursor: pointer;
+      border-radius: 2px;
+      margin-top: 8px;
+      transition: background 0.3s, transform 0.2s, box-shadow 0.3s;
+    }
+    .btn-submit:hover {
+      background: var(--red2);
+      transform: translateY(-2px);
+      box-shadow: 0 8px 20px rgba(204,0,0,0.35);
+    }
+    .btn-submit:active { transform: translateY(0); }
+    .form-success {
+      display: none;
+      text-align: center;
+      padding: 40px 20px;
+      color: var(--gold);
+    }
+    .form-success .success-icon { font-size: 3rem; margin-bottom: 16px; }
+    .form-success p { color: var(--light); font-size: 0.9rem; }
+
+    /* ─── FOOTER ────────────────────────────────────────────── */
+    #footer {
+      background: #050505;
+      padding: 60px 5% 30px;
+      border-top: 1px solid rgba(201,168,76,0.1);
+    }
+    .footer-inner {
+      display: grid;
+      grid-template-columns: 2fr 1fr 1fr;
+      gap: 60px;
+      max-width: 1100px;
+      margin: 0 auto;
+      padding-bottom: 50px;
+      border-bottom: 1px solid rgba(255,255,255,0.06);
+    }
+    .footer-brand-name {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 2rem;
+      letter-spacing: 0.08em;
+      color: var(--gold);
+      margin-bottom: 8px;
+    }
+    .footer-brand-sub {
+      font-size: 0.68rem;
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+      color: var(--gray);
+      margin-bottom: 18px;
+    }
+    .footer-tagline {
+      font-size: 0.88rem;
+      color: var(--gray);
+      line-height: 1.7;
+      max-width: 260px;
+    }
+    .footer-social {
+      display: flex;
+      gap: 12px;
+      margin-top: 24px;
+    }
+    .social-btn {
+      width: 40px; height: 40px;
+      border: 1px solid rgba(255,255,255,0.1);
+      border-radius: 2px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1rem;
+      transition: border-color 0.3s, background 0.3s, transform 0.2s;
+      text-decoration: none;
+    }
+    .social-btn:hover { border-color: var(--gold); background: rgba(201,168,76,0.1); transform: translateY(-2px); }
+    .footer-col-title {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 1.1rem;
+      letter-spacing: 0.1em;
+      color: var(--white);
+      margin-bottom: 20px;
+    }
+    .footer-links { list-style: none; display: flex; flex-direction: column; gap: 10px; }
+    .footer-links a {
+      font-size: 0.85rem;
+      color: var(--gray);
+      transition: color 0.3s, padding-left 0.3s;
+      display: block;
+    }
+    .footer-links a:hover { color: var(--gold); padding-left: 6px; }
+    .footer-bottom {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      max-width: 1100px;
+      margin: 24px auto 0;
+      font-size: 0.75rem;
+      color: #444;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+    .footer-bottom span { color: var(--gold); }
+
+    /* ─── RESPONSIVE ────────────────────────────────────────── */
+    @media (max-width: 900px) {
+      .gallery-grid { grid-template-columns: 1fr 1fr; grid-template-rows: repeat(3, 220px); }
+      .gallery-item:nth-child(1), .gallery-item:nth-child(4) { grid-column: span 1; }
+      .gallery-item:nth-child(1) { grid-column: span 2; }
+      .about-inner { grid-template-columns: 1fr; gap: 48px; }
+      .about-visual { height: 300px; }
+      .contact-inner { grid-template-columns: 1fr; gap: 48px; }
+      .footer-inner { grid-template-columns: 1fr 1fr; gap: 40px; }
+    }
+    @media (max-width: 680px) {
+      .nav-links { display: none; }
+      .hamburger { display: flex; }
+      section { padding: 70px 6%; }
+      .gallery-grid { grid-template-columns: 1fr; grid-template-rows: repeat(6, 200px); }
+      .gallery-item:nth-child(1), .gallery-item:nth-child(4) { grid-column: span 1; }
+      .services-grid { grid-template-columns: 1fr 1fr; }
+      .form-grid { grid-template-columns: 1fr; }
+      .form-group.full { grid-column: span 1; }
+      .footer-inner { grid-template-columns: 1fr; gap: 36px; }
+      .footer-bottom { flex-direction: column; text-align: center; }
+      .about-stats { grid-template-columns: 1fr 1fr 1fr; }
+    }
+    @media (max-width: 420px) {
+      .services-grid { grid-template-columns: 1fr; }
+      .about-stats { grid-template-columns: 1fr; }
+    }
+
+    /* ─── MISC ──────────────────────────────────────────────── */
+    ::selection { background: rgba(201,168,76,0.3); color: var(--white); }
+    ::-webkit-scrollbar { width: 6px; }
+    ::-webkit-scrollbar-track { background: var(--black); }
+    ::-webkit-scrollbar-thumb { background: var(--gold); border-radius: 3px; }
+  </style>
+</head>
+<body>
+
+<!-- ──────────────── NAVBAR ──────────────── -->
+<nav id="navbar">
+  <a href="#hero" class="nav-logo">
+    <span class="nav-logo-main">Over The Top</span>
+    <span class="nav-logo-sub">Barbershop · San Antonio</span>
+  </a>
+  <ul class="nav-links">
+    <li><a href="#services">Services</a></li>
+    <li><a href="#gallery">Gallery</a></li>
+    <li><a href="#about">About</a></li>
+    <li><a href="#testimonials">Reviews</a></li>
+    <li><a href="#contact" class="btn-book-nav">Book Now</a></li>
+  </ul>
+  <div class="hamburger" id="hamburger" aria-label="Menu" role="button" tabindex="0">
+    <span></span><span></span><span></span>
+  </div>
+</nav>
+
+<!-- mobile menu -->
+<div class="mobile-menu" id="mobileMenu">
+  <a href="#services" class="mob-link">Services</a>
+  <a href="#gallery" class="mob-link">Gallery</a>
+  <a href="#about" class="mob-link">About</a>
+  <a href="#testimonials" class="mob-link">Reviews</a>
+  <a href="#contact" class="btn-book-mob mob-link">Book Now</a>
+</div>
+
+<!-- ──────────────── HERO ──────────────── -->
+<section id="hero">
+  <div class="hero-bg"></div>
+  <div class="hero-grid"></div>
+  <div class="hero-content">
+    <div class="hero-eyebrow reveal">San Antonio, TX · Northwest Side</div>
+    <h1 class="hero-title reveal">San Antonio's <span>#1</span> Barbershop</h1>
+    <p class="hero-sub reveal">Walk in. Walk out legendary.</p>
+    <a href="#contact" class="btn-hero reveal">Book Your Cut</a>
+  </div>
+  <div class="hero-scroll-hint">
+    <span>Scroll</span>
+    <div class="scroll-line"></div>
+  </div>
+</section>
+
+<!-- ──────────────── SERVICES ──────────────── -->
+<section id="services">
+  <div class="services-header reveal">
+    <p class="section-label">What We Offer</p>
+    <h2 class="section-title">Our Services</h2>
+    <div class="section-divider centered"></div>
+    <p class="section-intro centered">Every cut is crafted with precision. No rush, no shortcuts — just clean, sharp results every time.</p>
+  </div>
+  <div class="services-grid stagger">
+    <div class="service-card">
+      <span class="service-icon">✂️</span>
+      <div class="service-name">Haircut</div>
+      <p class="service-desc">Classic or modern cut, shaped and finished to perfection.</p>
+      <div class="service-price"><span>$</span>30</div>
+    </div>
+    <div class="service-card">
+      <span class="service-icon">🪒</span>
+      <div class="service-name">Beard Trim</div>
+      <p class="service-desc">Clean lines, shaped beard, smooth finish with hot towel.</p>
+      <div class="service-price"><span>$</span>20</div>
+    </div>
+    <div class="service-card">
+      <span class="service-icon">💈</span>
+      <div class="service-name">Fade</div>
+      <p class="service-desc">Skin fade, taper fade, or drop fade — crisp every time.</p>
+      <div class="service-price"><span>$</span>35</div>
+    </div>
+    <div class="service-card">
+      <span class="service-icon">👑</span>
+      <div class="service-name">Full Service</div>
+      <p class="service-desc">Haircut + beard trim + hot towel treatment. The full experience.</p>
+      <div class="service-price"><span>$</span>55</div>
+    </div>
+    <div class="service-card">
+      <span class="service-icon">🧒</span>
+      <div class="service-name">Kids Cut</div>
+      <p class="service-desc">Gentle cuts for little ones. Ages 12 and under.</p>
+      <div class="service-price"><span>$</span>20</div>
+    </div>
+  </div>
+</section>
+
+<!-- ──────────────── GALLERY ──────────────── -->
+<section id="gallery">
+  <div class="gallery-header reveal">
+    <p class="section-label">The Work</p>
+    <h2 class="section-title">Gallery</h2>
+    <div class="section-divider centered"></div>
+    <p class="section-intro centered">Every head is a canvas. See what we do with ours.</p>
+  </div>
+  <div class="gallery-grid stagger">
+    <div class="gallery-item">
+      <div class="gallery-bg"></div>
+      <div class="gallery-deco"></div>
+      <div class="gallery-placeholder-text">
+        <div class="ph-icon">💈</div>
+        <div class="ph-label">Add your photo here</div>
+      </div>
+      <div class="gallery-overlay"><span class="gallery-tag">Skin Fade</span></div>
+    </div>
+    <div class="gallery-item">
+      <div class="gallery-bg"></div>
+      <div class="gallery-deco"></div>
+      <div class="gallery-placeholder-text">
+        <div class="ph-icon">✂️</div>
+        <div class="ph-label">Add your photo here</div>
+      </div>
+      <div class="gallery-overlay"><span class="gallery-tag">Classic Cut</span></div>
+    </div>
+    <div class="gallery-item">
+      <div class="gallery-bg"></div>
+      <div class="gallery-deco"></div>
+      <div class="gallery-placeholder-text">
+        <div class="ph-icon">🪒</div>
+        <div class="ph-label">Add your photo here</div>
+      </div>
+      <div class="gallery-overlay"><span class="gallery-tag">Beard Trim</span></div>
+    </div>
+    <div class="gallery-item">
+      <div class="gallery-bg"></div>
+      <div class="gallery-deco"></div>
+      <div class="gallery-placeholder-text">
+        <div class="ph-icon">👑</div>
+        <div class="ph-label">Add your photo here</div>
+      </div>
+      <div class="gallery-overlay"><span class="gallery-tag">Full Service</span></div>
+    </div>
+    <div class="gallery-item">
+      <div class="gallery-bg"></div>
+      <div class="gallery-deco"></div>
+      <div class="gallery-placeholder-text">
+        <div class="ph-icon">💈</div>
+        <div class="ph-label">Add your photo here</div>
+      </div>
+      <div class="gallery-overlay"><span class="gallery-tag">Drop Fade</span></div>
+    </div>
+    <div class="gallery-item">
+      <div class="gallery-bg"></div>
+      <div class="gallery-deco"></div>
+      <div class="gallery-placeholder-text">
+        <div class="ph-icon">✂️</div>
+        <div class="ph-label">Add your photo here</div>
+      </div>
+      <div class="gallery-overlay"><span class="gallery-tag">Taper Fade</span></div>
+    </div>
+  </div>
+  <p class="gallery-note reveal">Replace placeholders with your actual photos — drop them into <strong>assets/</strong> and swap the background-image.</p>
+</section>
+
+<!-- ──────────────── ABOUT ──────────────── -->
+<section id="about">
+  <div class="about-inner">
+    <div class="about-visual reveal-left">
+      <div class="about-card-main">
+        <div class="about-big-text">OTT</div>
+      </div>
+      <div class="about-badge">
+        <span class="badge-num">5★</span>
+        <span class="badge-txt">Rated</span>
+      </div>
+    </div>
+    <div class="about-content reveal-right">
+      <p class="section-label">Who We Are</p>
+      <h2 class="section-title">Over The Top</h2>
+      <div class="section-divider"></div>
+      <p class="section-intro">
+        Serving San Antonio's northwest side since day one. At Over The Top Barbershop,
+        we believe every man deserves a clean cut and a great experience. No shortcuts,
+        no rushing — quality cuts, every single time.
+      </p>
+      <p class="section-intro" style="margin-top:16px;">
+        Whether you're coming in for a quick fade or a full grooming session,
+        you'll leave looking sharp and feeling confident. That's the Over The Top promise.
+      </p>
+      <div class="about-stats stagger">
+        <div class="about-stat">
+          <span class="about-stat-num">5★</span>
+          <span class="about-stat-label">Rating</span>
+        </div>
+        <div class="about-stat">
+          <span class="about-stat-num">100%</span>
+          <span class="about-stat-label">Satisfaction</span>
+        </div>
+        <div class="about-stat">
+          <span class="about-stat-num">NW</span>
+          <span class="about-stat-label">San Antonio</span>
+        </div>
+      </div>
+      <a href="#contact" class="about-cta">Book Your Appointment →</a>
+    </div>
+  </div>
+</section>
+
+<!-- ──────────────── TESTIMONIALS ──────────────── -->
+<section id="testimonials">
+  <div class="testimonials-header reveal">
+    <p class="section-label">What Clients Say</p>
+    <h2 class="section-title">Reviews</h2>
+    <div class="section-divider centered"></div>
+  </div>
+  <div class="testimonials-grid stagger">
+    <div class="testimonial-card">
+      <div class="stars">
+        <span class="star">★</span><span class="star">★</span><span class="star">★</span><span class="star">★</span><span class="star">★</span>
+      </div>
+      <p class="testimonial-text">"Best fade I've had in San Antonio, no cap. These guys know exactly what they're doing. Always walk out looking clean and sharp. Wouldn't go anywhere else."</p>
+      <div class="testimonial-author">
+        <div class="author-avatar av1">JR</div>
+        <div>
+          <div class="author-name">José Ramirez</div>
+          <div class="author-meta">Regular client · San Antonio, TX</div>
+        </div>
+      </div>
+    </div>
+    <div class="testimonial-card">
+      <div class="stars">
+        <span class="star">★</span><span class="star">★</span><span class="star">★</span><span class="star">★</span><span class="star">★</span>
+      </div>
+      <p class="testimonial-text">"I've been to plenty of barbershops around the city, but Over The Top is on another level. Attention to detail is insane. My beard trim came out perfect every time."</p>
+      <div class="testimonial-author">
+        <div class="author-avatar av2">MC</div>
+        <div>
+          <div class="author-name">Marcus Carter</div>
+          <div class="author-meta">Verified review · Google</div>
+        </div>
+      </div>
+    </div>
+    <div class="testimonial-card">
+      <div class="stars">
+        <span class="star">★</span><span class="star">★</span><span class="star">★</span><span class="star">★</span><span class="star">★</span>
+      </div>
+      <p class="testimonial-text">"Llevo años buscando un barbero que me entienda y por fin lo encontré. El servicio es excelente, el ambiente es increíble y el precio es justo. ¡100% recomendado!"</p>
+      <div class="testimonial-author">
+        <div class="author-avatar av3">DG</div>
+        <div>
+          <div class="author-name">Diego Guerrero</div>
+          <div class="author-meta">Cliente habitual · San Antonio</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ──────────────── CONTACT ──────────────── -->
+<section id="contact">
+  <div class="contact-inner">
+    <div class="contact-info reveal-left">
+      <p class="section-label">Find Us</p>
+      <h2 class="section-title">Book & Visit</h2>
+      <div class="section-divider"></div>
+
+      <div class="contact-item">
+        <div class="contact-icon">📍</div>
+        <div>
+          <div class="contact-item-title">Location</div>
+          <div class="contact-item-body">
+            Northwest San Antonio, TX<br>
+            <span style="color: var(--gray); font-size:0.8rem;">Exact address provided on booking</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="contact-item">
+        <div class="contact-icon">🕐</div>
+        <div>
+          <div class="contact-item-title">Hours</div>
+          <table class="hours-table">
+            <tr><td>Monday – Friday</td><td>9:00 AM – 7:00 PM</td></tr>
+            <tr><td>Saturday</td><td>9:00 AM – 7:00 PM</td></tr>
+            <tr><td>Sunday</td><td>Closed</td></tr>
+          </table>
+        </div>
+      </div>
+
+      <div class="contact-item">
+        <div class="contact-icon">📱</div>
+        <div>
+          <div class="contact-item-title">Social</div>
+          <div class="contact-item-body">@overthetopbarbershop<br>
+            <span style="color:var(--gray);font-size:0.8rem;">Instagram · Facebook · TikTok</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="contact-form-wrap reveal-right">
+      <div class="form-title">Request an Appointment</div>
+      <form id="bookingForm">
+        <div class="form-grid">
+          <div class="form-group">
+            <label for="fname">Full Name</label>
+            <input type="text" id="fname" placeholder="Your name" required />
+          </div>
+          <div class="form-group">
+            <label for="fphone">Phone</label>
+            <input type="tel" id="fphone" placeholder="(210) 000-0000" required />
+          </div>
+          <div class="form-group">
+            <label for="fservice">Service</label>
+            <select id="fservice" required>
+              <option value="" disabled selected>Select a service</option>
+              <option value="haircut">Haircut — $30</option>
+              <option value="beard">Beard Trim — $20</option>
+              <option value="fade">Fade — $35</option>
+              <option value="full">Full Service — $55</option>
+              <option value="kids">Kids Cut — $20</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="fdate">Preferred Date</label>
+            <input type="date" id="fdate" required />
+          </div>
+          <div class="form-group full">
+            <button type="submit" class="btn-submit">Confirm Booking</button>
+          </div>
+        </div>
+      </form>
+      <div class="form-success" id="formSuccess">
+        <div class="success-icon">✅</div>
+        <h3 style="font-family:'Bebas Neue';font-size:1.8rem;letter-spacing:0.06em;margin-bottom:10px;">You're Booked!</h3>
+        <p>Thanks! We'll reach out to confirm your appointment shortly.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ──────────────── FOOTER ──────────────── -->
+<footer id="footer">
+  <div class="footer-inner">
+    <div>
+      <div class="footer-brand-name">Over The Top</div>
+      <div class="footer-brand-sub">Barbershop · San Antonio, TX</div>
+      <p class="footer-tagline">Walk in. Walk out legendary. Serving the northwest side with quality cuts and premium service.</p>
+      <div class="footer-social">
+        <a href="#" class="social-btn" aria-label="Instagram" title="Instagram">
+          <!-- Instagram icon -->
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="4.5"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none"/>
+          </svg>
+        </a>
+        <a href="#" class="social-btn" aria-label="Facebook" title="Facebook">
+          <!-- Facebook icon -->
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
+            <path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/>
+          </svg>
+        </a>
+        <a href="#" class="social-btn" aria-label="TikTok" title="TikTok">
+          <!-- TikTok icon -->
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
+            <path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-2.88 2.5 2.89 2.89 0 0 1-2.89-2.89 2.89 2.89 0 0 1 2.89-2.89c.28 0 .54.04.79.1V9.01a6.34 6.34 0 0 0-.79-.05 6.34 6.34 0 0 0-6.34 6.34 6.34 6.34 0 0 0 6.34 6.34 6.34 6.34 0 0 0 6.33-6.34V8.9a8.18 8.18 0 0 0 4.78 1.52V7a4.85 4.85 0 0 1-1.01-.31z"/>
+          </svg>
+        </a>
+      </div>
+    </div>
+    <div>
+      <div class="footer-col-title">Quick Links</div>
+      <ul class="footer-links">
+        <li><a href="#services">Services & Pricing</a></li>
+        <li><a href="#gallery">Gallery</a></li>
+        <li><a href="#about">About Us</a></li>
+        <li><a href="#testimonials">Reviews</a></li>
+        <li><a href="#contact">Book Appointment</a></li>
+      </ul>
+    </div>
+    <div>
+      <div class="footer-col-title">Hours</div>
+      <ul class="footer-links">
+        <li><span style="color:var(--light);font-size:.85rem;">Mon – Fri &nbsp; <span style="color:var(--gold)">9am – 7pm</span></span></li>
+        <li><span style="color:var(--light);font-size:.85rem;">Saturday &nbsp; <span style="color:var(--gold)">9am – 7pm</span></span></li>
+        <li><span style="color:var(--red);font-size:.85rem;">Sunday &nbsp;&nbsp;&nbsp; Closed</span></li>
+      </ul>
+      <div style="margin-top:28px;">
+        <div class="footer-col-title">Location</div>
+        <p style="font-size:.85rem;color:var(--gray);line-height:1.7;">Northwest Side<br>San Antonio, TX</p>
+      </div>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <div>© 2026 <span>Over The Top Barbershop</span>. All rights reserved.</div>
+    <div style="color:#333;">Designed with precision in San Antonio, TX</div>
+  </div>
+</footer>
+
+<!-- ──────────────── JAVASCRIPT ──────────────── -->
+<script>
+  // ── Navbar scroll ──────────────────────────
+  const navbar = document.getElementById('navbar');
+  window.addEventListener('scroll', () => {
+    navbar.classList.toggle('scrolled', window.scrollY > 60);
+  }, { passive: true });
+
+  // ── Hamburger menu ─────────────────────────
+  const hamburger = document.getElementById('hamburger');
+  const mobileMenu = document.getElementById('mobileMenu');
+  const mobLinks = document.querySelectorAll('.mob-link');
+
+  function toggleMenu() {
+    hamburger.classList.toggle('open');
+    mobileMenu.classList.toggle('open');
+    document.body.style.overflow = mobileMenu.classList.contains('open') ? 'hidden' : '';
+  }
+
+  hamburger.addEventListener('click', toggleMenu);
+  hamburger.addEventListener('keydown', e => { if (e.key === 'Enter' || e.key === ' ') toggleMenu(); });
+
+  mobLinks.forEach(link => {
+    link.addEventListener('click', () => {
+      hamburger.classList.remove('open');
+      mobileMenu.classList.remove('open');
+      document.body.style.overflow = '';
+    });
+  });
+
+  // ── Scroll reveal (Intersection Observer) ──
+  const revealEls = document.querySelectorAll('.reveal, .reveal-left, .reveal-right, .stagger');
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('visible');
+        observer.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.12, rootMargin: '0px 0px -40px 0px' });
+
+  revealEls.forEach(el => observer.observe(el));
+
+  // ── Hero stagger on load ────────────────────
+  document.querySelectorAll('#hero .reveal').forEach((el, i) => {
+    setTimeout(() => el.classList.add('visible'), 300 + i * 180);
+  });
+
+  // ── Booking form ────────────────────────────
+  const form = document.getElementById('bookingForm');
+  const formSuccess = document.getElementById('formSuccess');
+
+  // Set min date to today
+  const dateInput = document.getElementById('fdate');
+  const today = new Date().toISOString().split('T')[0];
+  dateInput.min = today;
+
+  form.addEventListener('submit', (e) => {
+    e.preventDefault();
+    form.style.opacity = '0';
+    form.style.transform = 'translateY(-10px)';
+    form.style.transition = 'opacity 0.4s, transform 0.4s';
+    setTimeout(() => {
+      form.style.display = 'none';
+      formSuccess.style.display = 'block';
+      formSuccess.style.opacity = '0';
+      requestAnimationFrame(() => {
+        formSuccess.style.transition = 'opacity 0.5s';
+        formSuccess.style.opacity = '1';
+      });
+    }, 400);
+  });
+
+  // ── Smooth hover parallax on gallery items ──
+  document.querySelectorAll('.gallery-item').forEach(item => {
+    item.addEventListener('mousemove', (e) => {
+      const rect = item.getBoundingClientRect();
+      const x = (e.clientX - rect.left) / rect.width - 0.5;
+      const y = (e.clientY - rect.top) / rect.height - 0.5;
+      const bg = item.querySelector('.gallery-bg');
+      if (bg) bg.style.transform = `scale(1.07) translate(${x * 8}px, ${y * 8}px)`;
+    });
+    item.addEventListener('mouseleave', () => {
+      const bg = item.querySelector('.gallery-bg');
+      if (bg) bg.style.transform = '';
+    });
+  });
+
+  // ── Active nav link highlight ───────────────
+  const sections = document.querySelectorAll('section[id]');
+  const navLinks = document.querySelectorAll('.nav-links a:not(.btn-book-nav)');
+
+  window.addEventListener('scroll', () => {
+    let current = '';
+    sections.forEach(section => {
+      if (window.scrollY >= section.offsetTop - 120) current = section.id;
+    });
+    navLinks.forEach(a => {
+      a.style.color = a.getAttribute('href') === `#${current}` ? 'var(--gold)' : '';
+    });
+  }, { passive: true });
+</script>
+</body>
+</html>
